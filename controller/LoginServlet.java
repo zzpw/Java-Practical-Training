@@ -8,10 +8,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import dao.LoginDao;
+import data.Account;
+import service.AccountService;
+import service.impl.AccountServiceImpl;
 
 @WebServlet("/LoginServlet")   
 public class LoginServlet extends HttpServlet{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -22,19 +29,19 @@ public class LoginServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String userName = req.getParameter("username");
 		String passward = req.getParameter("passward");
-		req.setAttribute("userName", userName);
-		LoginDao logindao = new LoginDao();
-		if (!logindao.checkUserName(userName)) { // 账户不存在处理
+		req.getSession().setAttribute("userName", userName);
+		AccountService accSerImpl = new AccountServiceImpl();
+		if (!accSerImpl.checkUserName(userName)) { // 账户不存在处理
 			req.setAttribute("checkUserName", "账户不存在");
 			System.out.println("账户不存在");
-			req.getRequestDispatcher("Login.jsp").forward(req, resp);
+			req.getRequestDispatcher("login.jsp").forward(req, resp);
 		} else {
-			if (logindao.checkPassWard(userName, passward)) { // 登陆成功处理
-				resp.sendRedirect("mainForm.jsp");
+			if (accSerImpl.checkUserNameAndPassward(new Account(userName, passward))) { // 登陆成功处理
+				resp.sendRedirect("index.jsp");
 			} else { // 密码错误处理
 				req.setAttribute("checkUserName", null);
 				req.setAttribute("checkPassward", "密码错误");
-				req.getRequestDispatcher("Login.jsp").forward(req, resp);
+				req.getRequestDispatcher("login.jsp").forward(req, resp);
 			}
 		}
 	}
