@@ -14,7 +14,7 @@ public interface BaseDao<T1, T2> { // T1: javabean, T2: id
 	
 	public boolean doExist(T2 t); // 是否存在
 	
-	public T1 findById(T2 t); // 根据 id 查找
+	public T1 queryById(T2 t); // 根据 id 查找
 	
 	public List<T1> findAll(); // 返回全部
 }

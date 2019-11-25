@@ -6,13 +6,28 @@ public class InBoundInfo {
 	private String number;
 	private Date date;
 	private String batch;
-	private int originalNumber;
-	private int actualNumber;
+	private int originalQuantity;
+	private int actualQuantity;
 	private String handler;
 	private String storagePlace;
-	
 	private String remarks;
 	
+	public InBoundInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public InBoundInfo(String number, Date date, String batch, int originalQuantity, int actualQuantity, String handler,
+			String storagePlace, String remarks) {
+		super();
+		this.number = number;
+		this.date = date;
+		this.batch = batch;
+		this.originalQuantity = originalQuantity;
+		this.actualQuantity = actualQuantity;
+		this.handler = handler;
+		this.storagePlace = storagePlace;
+		this.remarks = remarks;
+	}
 	public String getNumber() {
 		return number;
 	}
@@ -31,17 +46,17 @@ public class InBoundInfo {
 	public void setBatch(String batch) {
 		this.batch = batch;
 	}
-	public int getOriginalNumber() {
-		return originalNumber;
+	public int getOriginalQuantity() {
+		return originalQuantity;
 	}
-	public void setOriginalNumber(int originalNumber) {
-		this.originalNumber = originalNumber;
+	public void setOriginalQuantity(int originalQuantity) {
+		this.originalQuantity = originalQuantity;
 	}
-	public int getActualNumber() {
-		return actualNumber;
+	public int getActualQuantity() {
+		return actualQuantity;
 	}
-	public void setActualNumber(int actualNumber) {
-		this.actualNumber = actualNumber;
+	public void setActualQuantity(int actualQuantity) {
+		this.actualQuantity = actualQuantity;
 	}
 	public String getHandler() {
 		return handler;
@@ -61,4 +76,6 @@ public class InBoundInfo {
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
 	}
+	
+
 }

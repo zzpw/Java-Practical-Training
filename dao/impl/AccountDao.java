@@ -19,7 +19,7 @@ public class AccountDao implements BaseDao<Account, String>{
 	public boolean doDelete(String t) {
 		ConnectDB db = new ConnectDB();
 		Connection conn = db.getConnection();
-		String sql = "delete from 账户信息表 where 账户=?";
+		String sql = "delete from 账户信息表 where 账号=?";
 		int num = 0;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -37,7 +37,7 @@ public class AccountDao implements BaseDao<Account, String>{
 	public boolean doUpdate(Account t) {
 		ConnectDB db = new ConnectDB();
 		Connection conn = db.getConnection();
-		String sql = "update 账户信息表 set 密码=? where 账户=?";
+		String sql = "update 账户信息表 set 密码=? where 账号=?";
 		int num = 0;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -54,14 +54,14 @@ public class AccountDao implements BaseDao<Account, String>{
 
 	@Override
 	public boolean doExist(String userName) {
-		return findById(userName) != null;
+		return queryById(userName) != null;
 	}
 	
 	@Override
 	public boolean doExistMul(Account t) {
 		ConnectDB db = new ConnectDB();
 		Connection conn = db.getConnection();
-		String sql = "select* from 账户信息表 where 账户=? and 密码=?";
+		String sql = "select* from 账户信息表 where 账号=? and 密码=?";
 		boolean ok = false;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);
@@ -81,10 +81,10 @@ public class AccountDao implements BaseDao<Account, String>{
 	}
 
 	@Override
-	public Account findById(String userName) {
+	public Account queryById(String userName) {
 		ConnectDB db = new ConnectDB();
 		Connection conn = db.getConnection();
-		String sql = "select* from 账户信息表  where 账户=?";
+		String sql = "select* from 账户信息表  where 账号=?";
 		Account account = null;
 		try {
 			PreparedStatement ps = conn.prepareStatement(sql);

@@ -9,6 +9,18 @@ public class PaymentInfo {
 	private String operator;
 	private Date date;
 	
+	public PaymentInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public PaymentInfo(String serialNumber, String moneyType, float money, String operator, Date date) {
+		super();
+		this.serialNumber = serialNumber;
+		this.moneyType = moneyType;
+		this.money = money;
+		this.operator = operator;
+		this.date = date;
+	}
 	public String getSerialNumber() {
 		return serialNumber;
 	}

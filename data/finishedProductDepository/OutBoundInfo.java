@@ -6,11 +6,10 @@ public class OutBoundInfo {
 	private String number;
 	private Date date;
 	private String orderNumber;
-	private String batch;
 	private int quantity;
+	private String batch;
 	private String handler;
 	private String recipientPhone;
-	
 	private String remarks;
 	
 	public String getNumber() {

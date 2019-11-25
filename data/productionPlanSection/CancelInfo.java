@@ -8,6 +8,17 @@ public class CancelInfo {
 	private String handler;
 	private String reason;
 	
+	public CancelInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public CancelInfo(String batch, Date date, String handler, String reason) {
+		super();
+		this.batch = batch;
+		this.date = date;
+		this.handler = handler;
+		this.reason = reason;
+	}
 	public String getBatch() {
 		return batch;
 	}

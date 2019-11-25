@@ -8,9 +8,26 @@ public class CollectionInfo {
 	private String type;
 	private float money;
 	private Date date;
-	private String payee;
+	private String operator;
 	private String payer;
 	
+	public CollectionInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public CollectionInfo(String serialNumber, String orderNumber, String type, float money, Date date, String operator,
+			String payer) {
+		super();
+		this.serialNumber = serialNumber;
+		this.orderNumber = orderNumber;
+		this.type = type;
+		this.money = money;
+		this.date = date;
+		this.operator = operator;
+		this.payer = payer;
+	}
+
 	public String getSerialNumber() {
 		return serialNumber;
 	}
@@ -41,11 +58,11 @@ public class CollectionInfo {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getPayee() {
-		return payee;
+	public String getOperator() {
+		return operator;
 	}
-	public void setPayee(String payee) {
-		this.payee = payee;
+	public void setOperator(String operator) {
+		this.operator = operator;
 	}
 	public String getPayer() {
 		return payer;
@@ -54,5 +71,6 @@ public class CollectionInfo {
 		this.payer = payer;
 	}
 	
+
 	
 }

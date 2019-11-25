@@ -9,6 +9,18 @@ public class WarehouseInfo {
 	private String batch;
 	private String storagePlace;
 	
+	public WarehouseInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public WarehouseInfo(String number, int quantity, Date date, String batch, String storagePlace) {
+		super();
+		this.number = number;
+		this.quantity = quantity;
+		this.date = date;
+		this.batch = batch;
+		this.storagePlace = storagePlace;
+	}
 	public String getNumber() {
 		return number;
 	}

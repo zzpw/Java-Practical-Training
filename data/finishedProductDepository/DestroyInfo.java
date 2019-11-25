@@ -9,6 +9,18 @@ public class DestroyInfo {
 	private String handler;
 	private String remarks;
 	
+	public DestroyInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public DestroyInfo(String number, Date date, String batch, String handler, String remarks) {
+		super();
+		this.number = number;
+		this.date = date;
+		this.batch = batch;
+		this.handler = handler;
+		this.remarks = remarks;
+	}
 	public String getNumber() {
 		return number;
 	}

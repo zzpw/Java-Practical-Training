@@ -13,6 +13,23 @@ public class ProductionPlanInfo {
 	private Date submitDate;
 	private String remarks;
 	
+	public ProductionPlanInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public ProductionPlanInfo(String batch, String goodsNumber, int quantity, Date productionDate, String workshop,
+			String status, String handler, Date submitDate, String remarks) {
+		super();
+		this.batch = batch;
+		this.goodsNumber = goodsNumber;
+		this.quantity = quantity;
+		this.productionDate = productionDate;
+		this.workshop = workshop;
+		this.status = status;
+		this.handler = handler;
+		this.submitDate = submitDate;
+		this.remarks = remarks;
+	}
 	public String getBatch() {
 		return batch;
 	}

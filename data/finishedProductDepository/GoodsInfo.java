@@ -3,14 +3,42 @@ package data.finishedProductDepository;
 public class GoodsInfo {
 	private String number;
 	private String name;
-	private String Specification;
+	private String specification;
 	private String unit;
 	private String type;
 	private int shelfLife;
+	private String shelfLifeUnit;
 	private float unitPrice;
 	
 	private String remarks;
 	
+	public GoodsInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	
+	public GoodsInfo(String number, String name, String specification, String unit, String type, int shelfLife,
+			String shelfLifeUnit, float unitPrice, String remarks) {
+		super();
+		this.number = number;
+		this.name = name;
+		this.specification = specification;
+		this.unit = unit;
+		this.type = type;
+		this.shelfLife = shelfLife;
+		this.shelfLifeUnit = shelfLifeUnit;
+		this.unitPrice = unitPrice;
+		this.remarks = remarks;
+	}
+
+	public String getShelfLifeUnit() {
+		return shelfLifeUnit;
+	}
+
+	public void setShelfLifeUnit(String shelfLifeUnit) {
+		this.shelfLifeUnit = shelfLifeUnit;
+	}
+
 	public String getNumber() {
 		return number;
 	}
@@ -24,10 +52,10 @@ public class GoodsInfo {
 		this.name = name;
 	}
 	public String getSpecification() {
-		return Specification;
+		return specification;
 	}
 	public void setSpecification(String specification) {
-		Specification = specification;
+		this.specification = specification;
 	}
 	public String getUnit() {
 		return unit;

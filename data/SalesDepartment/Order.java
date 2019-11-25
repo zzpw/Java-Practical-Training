@@ -1,6 +1,6 @@
 package data.SalesDepartment;
 
-import java.util.Date;
+import java.util.*;
 
 public class Order {
 	private String number;
@@ -12,15 +12,11 @@ public class Order {
 	String status;
 	float pendingPayment;
 	
-	public String getNumber() {
-		return number;
-	}
-	
 	public Order() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	public Order(String number, String type, Date date, String client, String staff, float totalPrice, String status,
 			float pendingPayment) {
 		super();
@@ -33,6 +29,10 @@ public class Order {
 		this.status = status;
 		this.pendingPayment = pendingPayment;
 	}
+	public String getNumber() {
+		return number;
+	}
+	
 	public void setNumber(String number) {
 		this.number = number;
 	}

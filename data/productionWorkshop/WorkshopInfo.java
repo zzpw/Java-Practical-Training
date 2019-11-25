@@ -5,6 +5,16 @@ public class WorkshopInfo {
 	private String principal;
 	private String type;
 	
+	public WorkshopInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public WorkshopInfo(String number, String principal, String type) {
+		super();
+		this.number = number;
+		this.principal = principal;
+		this.type = type;
+	}
 	public String getNumber() {
 		return number;
 	}

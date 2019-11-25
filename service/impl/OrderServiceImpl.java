@@ -23,13 +23,12 @@ public class OrderServiceImpl implements OrderService{
 
 	@Override
 	public Order queryOrderById(String number) {
-		return orderDao.findById(number);
+		return orderDao.queryById(number);
 	}
 
 	@Override
 	public List<Order> queryOrderByClient(String client) {
-		// TODO Auto-generated method stub
-		return null;
+		return orderDao.findByClient(client);
 	}
 
 	@Override
