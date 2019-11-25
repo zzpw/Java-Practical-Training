@@ -111,13 +111,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 			
 			.headeruserface {
-				background-image: url('../Resources/images/logo.png');
-				width: 40px;
-				height: 40px;
-				background-color: white;
-				margin: 2px 10px 2px 2px;
-				border-radius: 20px;
-				float: left;
+				width:400px;
+				height:30px;
+				float:right;
 			}
 			
 			.headerlitools_ulinfo {
@@ -222,25 +218,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
+  <%
+	String userName = (String)session.getAttribute("userName");
+  %>
     <div class="dvheader">
 			<div class="dvheadertools">
 				<span class="headerspantitle">进销存管理系统</span>
 				<ul class="headerultools">
 					<div class="headeruserface" style="text-align: center;">
-						<p>当前用户：</p>
-						<p>职务:</p>
-					</div>
-<!-- 					<li class="headerlitools_info headerlitools" style="background-color: #075597"> -->
-<!-- 						<div class="headeruserface" style="text-align: center;"><i class="icon-user" style="color: black;font-size: 19px;"></i></div> -->
-<!-- 						管理员<i style="margin-left: 8px;" class="icon-caret-down"></i> -->
-<!-- 						<ul class="headerlitools_ulinfo"> -->
-
-<!-- 							<li style="border-top: 1px solid #E4ECF3;"> -->
-<!-- 								<i class="icon-off" style="margin-right: 10px;"></i> -->
-<!-- 								<a style="color: black; text-decoration: none;">退出</a> -->
-<!-- 							</li> -->
-						</ul>
-					</li>
+						<p>当前用户：<input type="text" readonly="readonly" name="currentUser" value="<%= userName  %>"></p>
+						</div>
 				</ul>
 			</div>
 		</div>
@@ -249,9 +236,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<ul class="ulleftmenu" style="border-right: 1px solid #ddd;">
 
 				<li class="limenuitem">
-					<i class="icon-cog menuicon"></i>
 					系统菜单
-					<b class="arrow icon-angle-down arrow-down"></b>
 					<ul class="ulleftsubitems">
 						<a href="caiwubu.jsp" target="right">
 							<li>财务部</li>
