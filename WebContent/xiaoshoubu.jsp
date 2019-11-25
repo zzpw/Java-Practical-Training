@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -27,20 +27,18 @@
 
 </head>
 <script type="text/javascript">
-	var i = 0;
 	//var arr = new Array('#00ffff', '#00ffff');
-	alert(arr);
+	//alert(arr);
 	var count = 1;
-	function addNew() {
-
-		var order_id = 1;
-		i++;
-		tr = document.all.tt.insertRow();
+	var order_id = 1;
+	function addNew(aa) {
+		tr = document.all.orderListTable.insertRow();
 		tr.style.backgroundColor = '#FFFFFF';
-		tr.insertCell().innerHTML = '<div   align=center>' + order_id
+		tr.insertCell().innerHTML = '<div   align=center>' + order_id;
 				+ '</div>';
-		tr.insertCell().innerHTML = '<div   align=center><select   style=\"width:100px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=START_SITUS  class=border_index></div>';
-		tr.insertCell().innerHTML = '<div   align=center><input   style=\"width:50px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=ARRIVE_SITUS   class=border_index></div>';
+		tr.insertCell().innerHTML = '<div   align=center><input placeholder=\"请输入编号\" style=\"width:100px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=goodsNumber  class=border_index></div>';
+		tr.insertCell().innerHTML = '<div   align=center><input placeholder=\"请输入数量\"   style=\"width:100px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=goodsQuantity   class=border_index></div>';
+		tr.insertCell().innerHTML = '<div   align=center>' + '</div>';
 		tr.insertCell().innerHTML = '<div   align=center>' + '</div>';
 		tr.insertCell().innerHTML = '<div   align=center>' + '</div>';
 		tr.insertCell().innerHTML = "<a href=javascript:void(0)  class=\"shenpi2\" onclick=del('"
@@ -50,13 +48,23 @@
 	}
 
 	//删除明细行 ...
-	function del(aa) {
-		document.all.tt
-				.deleteRow(window.event.srcElement.parentElement.parentElement.rowIndex);
-
-	}
+function del(aa) {
+    document.all.orderListTable
+        .deleteRow(window.event.srcElement.parentElement.parentElement.rowIndex);
+    count--;
+    order_id--;
+    var table = document.getElementById("orderListTable");
+    for (var i = 2; i < table.rows.length; i++) {
+        table.rows[i].cells[0].innerHTML = i - 1;
+        table.rows[i].cells[0].style.textAlign = "center";
+    }
+}
 </script>
 <body>
+
+<%
+String userName = (String)session.getAttribute("userName");
+%>
 	<div class="dvcontent">
 
 		<div>
@@ -93,7 +101,7 @@
 											<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
 												style="padding-top: 30px;">
 												<form class="am-form am-form-horizontal"
-													action="user/addUser1Submit.action" method="post">
+													action="OrderServlet?method=add" method="post">
 													<div class="am-form-group">
 														<label for="xiaoshou-number"
 															class="am-u-sm-3 am-form-label"> 订单编号 </label>
@@ -106,8 +114,8 @@
 														<label class="am-u-sm-3 am-form-label"> 订单类型 </label>
 														<div class="am-u-sm-9">
 															<select name="type">
-																<option value="1">现货</option>
-																<option value="2">预定</option>
+																<option value="现货">现货</option>
+																<option value="预定">预定</option>
 															</select>
 														</div>
 													</div>
@@ -126,7 +134,7 @@
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-staff"
 																readonly="readonly" placeholder="请输入10位有效的销售员编号"
-																name="staff">
+																name="staff" value="<%= userName %>">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -142,24 +150,25 @@
 														<label class="am-u-sm-3 am-form-label"> 订单状态 </label>
 														<div class="am-u-sm-9">
 															<select name="status">
-																<option value="1">未完成</option>
+																<option value="未完成">未完成</option>
 															</select>
 														</div>
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-9 am-u-sm-push-5">
-															<input type="button" class="am-btn am-btn-success"
+															<input type="submit" class="am-btn am-btn-success"
 																value="添加订单" />
 														</div>
 														<div class="am-form-group">
-															<table class ="table" width="100%" border="0" cellspacing="1" id="tt">
+															<table class ="table" width="100%" border="0" cellspacing="1" id="orderListTable">
 																<tr class="firstpage1">
 																	<td colspan="16" align="left">
 																</tr>
 																<tr class="firstpage">
-																	<td height="23" width="30%" style="text-align: center">序号</td>
-																	<td width="10%">货物编号</td>
+																	<td height="23" width="20%" style="text-align: center">序号</td>
+																	<td width="15%">货物编号</td>
 																	<td width="10%">数量</td>
+																	<td width="10%">名称</td>
 																	<td width="10%">单位</td>
 																	<td width="10%">单价</td>
 																	<td width="20%"><a href="javascript:void(0)"
@@ -330,7 +339,7 @@
 											<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
 												style="padding-top: 30px;">
 												<form class="am-form am-form-horizontal"
-													action="user/addUser1Submit.action" method="post">
+													action="OrderServlet?method=addClient" method="post">
 
 													<div class="am-form-group">
 														<label for="kehu-number" class="am-u-sm-3 am-form-label">
@@ -473,7 +482,7 @@
 											<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
 												style="padding-top: 30px;">
 												<form class="am-form am-form-horizontal"
-													action="user/addUser1Submit.action" method="post">
+													action="OrderServlet?method=queryById" method="post">
 
 													<div class="am-form-group">
 														<label for="kehu-id" class="am-u-sm-3 am-form-label">
