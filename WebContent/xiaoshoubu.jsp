@@ -29,7 +29,7 @@
 <script type="text/javascript">
 	//var arr = new Array('#00ffff', '#00ffff');
 	//alert(arr);
-	var count = 1;
+	var count = 0;
 	var order_id = 1;
 	function addNew(aa) {
 		tr = document.all.orderListTable.insertRow();
@@ -59,6 +59,99 @@ function del(aa) {
         table.rows[i].cells[0].style.textAlign = "center";
     }
 }
+	
+function submitFunc() {
+    if (count == 0) {
+    	alert("货物清单不能为空！");
+    	return;
+    }
+    /*xmlHttp = new XMLHttpRequest();
+    xmlHttp.open("GET", "OrderServlet?method=add");
+    xmlHttp.onreadystatechange = function () {
+        if (xmlHttp.readyState == 4) {
+            alert(xmlHttp.responseText);
+        }
+    }
+    xmlHttp.send();*/
+    document.getElementById("sub").click();
+}
+
+function submitReturn(){ // 退货脚本
+			var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); //创建XMLHTTP对象，考虑兼容性
+            xhr.open("POST","OrderServlet?method=add",true);
+            xhr.onreadystatechange=function(){
+                //alert("onreadystatechange,readyState="+xhr.readyState);
+                if(xhr.readyState==4)//服务器返回了
+                {
+                    if(xhr.status==200)//xhr.status http状态码
+                    {
+                        alert(xhr.responseText);//xhr.responseText返回的报文体
+                        //document.getElementById("result").innerText = xhr.responseText;
+                        //根据服务器返回的内容更新需要更新的内容
+                    }
+                    else
+                    {
+                        alert("服务器返回错误");
+                    }
+                }
+            };
+            alert("send之前");
+            xhr.send();//发出请求。并不会等服务器返回send方法才结束，因为我们需要提前监听xhr.onreadystatechange
+            // 事件，以便得知“服务器返回了”
+            alert("send之后");
+}
+	
+function submitSearch(){ // 查找订单脚本
+	var orderId=document.getElementById("searchOrderId");
+	var orderClicent=document.getElementById("searchOrderClient");
+	//alert(orderId.value=="");
+	//alert(orderClicent.value=="");
+	if(orderId.value!=""){
+		var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); //创建XMLHTTP对象，考虑兼容性
+        xhr.open("POST","OrderServlet?method=queryById",true);
+        xhr.onreadystatechange=function(){
+        alert("onreadystatechange,readyState="+xhr.readyState);
+        if(xhr.readyState==4)//服务器返回了
+        	{
+             	if(xhr.status==200  || xhr.status==0)//xhr.status http状态码
+                   // {
+                         alert(xhr.responseText);//xhr.responseText返回的报文体
+                        //document.getElementById("result").innerText = xhr.responseText;  根据服务器返回的内容更新需要更新的内容
+                   //	}
+                  // else
+                 //  {
+                 //      alert("服务器返回错误");
+                  // }
+                }
+            };
+            xhr.send();//发出请求。并不会等服务器返回send方法才结束，因为我们需要提前监听xhr.onreadystatechange事件，以便得知“服务器返回了”
+	}
+	else if(orderClicent.value!=""){
+		var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); //创建XMLHTTP对象，考虑兼容性
+        xhr.open("POST","OrderServlet?method=queryByClient",true);
+        xhr.onreadystatechange=function(){
+        alert("onreadystatechange,readyState="+xhr.readyState);
+        if(xhr.readyState==4)//服务器返回了
+        	{
+        	alert(xhr.status);
+             	if(xhr.status==200 || xhr.status==0)//xhr.status http状态码
+                    {
+                        alert(xhr.responseText);//xhr.responseText返回的报文体
+                        //document.getElementById("result").innerText = xhr.responseText;  根据服务器返回的内容更新需要更新的内容
+                    }
+                    else
+                    {
+                        alert("服务器返回错误");
+                    }
+              }
+        };
+        xhr.send();//发出请求。并不会等服务器返回send方法才结束，因为我们需要提前监听xhr.onreadystatechange事件，以便得知“服务器返回了”
+	}
+	else
+	{
+		alert("订单编号和客户编号必须填一个");
+	}
+ }
 </script>
 <body>
 
@@ -107,7 +200,7 @@ String userName = (String)session.getAttribute("userName");
 															class="am-u-sm-3 am-form-label"> 订单编号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-number"
-																readonly="readonly" name="number">
+																readonly="readonly" name="orderNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -125,7 +218,7 @@ String userName = (String)session.getAttribute("userName");
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-client"
 																required="required" placeholder="请输入10位有效的客户编号"
-																name="client">
+																name="clientNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -134,7 +227,7 @@ String userName = (String)session.getAttribute("userName");
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-staff"
 																readonly="readonly" placeholder="请输入10位有效的销售员编号"
-																name="staff" value="<%= userName %>">
+																name="staffNumber" value="<%= userName %>">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -156,8 +249,9 @@ String userName = (String)session.getAttribute("userName");
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-9 am-u-sm-push-5">
-															<input type="submit" class="am-btn am-btn-success"
-																value="添加订单" />
+															<input type="button" class="am-btn am-btn-success"
+																onclick="submitFunc()" value="添加订单" />
+															<input type="submit" id="sub" style="display:none;"/>
 														</div>
 														<div class="am-form-group">
 															<table class ="table" width="100%" border="0" cellspacing="1" id="orderListTable">
@@ -208,7 +302,7 @@ String userName = (String)session.getAttribute("userName");
 															退货单号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-number" readonly="readonly"
-																placeholder="请输入10位有效的订单编号" name="number">
+																placeholder="请输入10位有效的订单编号" name="returnNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -217,7 +311,7 @@ String userName = (String)session.getAttribute("userName");
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-clicent"
 																required="required" placeholder="请输入10位有效的客户编号"
-																name=" client">
+																name=" clientNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -225,7 +319,7 @@ String userName = (String)session.getAttribute("userName");
 															退货批次 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-batch" required="required"
-																placeholder="请输入有效的退货批次" name="batch">
+																placeholder="请输入有效的退货批次" name="batchNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -241,7 +335,7 @@ String userName = (String)session.getAttribute("userName");
 															处理人编号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-staff" readonly="readonly"
-																name="staff">
+																name="staffNumber" value="<%= userName %>">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -254,9 +348,9 @@ String userName = (String)session.getAttribute("userName");
 														</div>
 													</div>
 													<div class="am-form-group">
-														<div class="am-u-sm-9 am-u-sm-push-3">
-															<input type="submit" class="am-btn am-btn-success"
-																value="添加分类" />
+														<div class="am-u-sm-9 am-u-sm-push-5">
+															<input type="button" class="am-btn am-btn-success" onclick="submitReturn()"
+																value="退货" />
 														</div>
 													</div>
 												</form>
@@ -286,33 +380,17 @@ String userName = (String)session.getAttribute("userName");
 													action="user/addUser1Submit.action" method="post">
 
 													<div class="am-form-group">
-														<label for="name" class="am-u-sm-3 am-form-label">
-															食品1 </label>
+														<label for="searchFood" class="am-u-sm-3 am-form-label">
+															食品编号 </label>
 														<div class="am-u-sm-9">
-															<textarea class="" rows="1" id="user-intro"
-																name="remark1"></textarea>
-														</div>
-													</div>
-													<div class="am-form-group">
-														<label for="name" class="am-u-sm-3 am-form-label">
-															食品2 </label>
-														<div class="am-u-sm-9">
-															<textarea class="" rows="1" id="user-intro"
-																name="remark2"></textarea>
-														</div>
-													</div>
-													<div class="am-form-group">
-														<label for="name" class="am-u-sm-3 am-form-label">
-															食品3 </label>
-														<div class="am-u-sm-9">
-															<textarea class="" rows="1" id="user-intro"
-																name="remark3"></textarea>
+															<textarea class="" rows="1" id="searchFood"
+																name="foodNumber"></textarea>
 														</div>
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-9 am-u-sm-push-3">
 															<input type="submit" class="am-btn am-btn-success"
-																value="刷新" />
+																value="查询" />
 														</div>
 													</div>
 												</form>
@@ -346,7 +424,7 @@ String userName = (String)session.getAttribute("userName");
 															客户编号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-number" readonly="readonly"
-																name="number">
+																name="clientNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -354,7 +432,7 @@ String userName = (String)session.getAttribute("userName");
 															姓名 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-name" required="required"
-																placeholder="请输入10位有效的客户编号" name=" name">
+																placeholder="请输入10位有效的客户编号" name="clientName">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -362,7 +440,7 @@ String userName = (String)session.getAttribute("userName");
 															联系方式 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-tele" required="required"
-																placeholder="请输入有效的 联系方式" name=" tele">
+																placeholder="请输入有效的 联系方式" name=" teleNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -423,7 +501,7 @@ String userName = (String)session.getAttribute("userName");
 															姓名 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-name" required="required"
-																placeholder="客户姓名" name="name">
+																placeholder="客户姓名" name="clientName">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -485,16 +563,24 @@ String userName = (String)session.getAttribute("userName");
 													action="OrderServlet?method=queryById" method="post">
 
 													<div class="am-form-group">
-														<label for="kehu-id" class="am-u-sm-3 am-form-label">
+														<label for="searchOrderClient" class="am-u-sm-3 am-form-label">
 															客户编号 </label>
 														<div class="am-u-sm-9">
-															<input type="text" id="kehu-id" required
-																placeholder="客户编号" name="id">
+															<input type="text" id="searchOrderClient"
+																placeholder="客户编号" name="clientNumber">
+														</div>
+													</div>
+													<div class="am-form-group">
+														<label for="searchOrderId" class="am-u-sm-3 am-form-label">
+															订单编号 </label>
+														<div class="am-u-sm-9">
+															<input type="text" id="searchOrderId"
+																placeholder="订单编号" name="orderNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-5 am-u-sm-push-3">
-															<input type="submit" class="am-btn am-btn-success"
+															<input type="button" class="am-btn am-btn-success" onclick="submitSearch()"
 																value="查询订单" />
 														</div>										
 													</div>
