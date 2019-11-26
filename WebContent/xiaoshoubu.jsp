@@ -506,7 +506,7 @@ String userName = (String)session.getAttribute("userName");
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-5 am-u-sm-push-3">
-															<input type="submit" class="am-btn am-btn-success"
+															<input type="button" class="am-btn am-btn-success" onclick="SearchClientName()"
 																value="查询客户信息" />
 														</div>
 													</div>
