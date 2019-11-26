@@ -1,4 +1,4 @@
-<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" import="java.util.*" pageEncoding="UTF-8"%>
 <%
 	String path = request.getContextPath();
 	String basePath = request.getScheme() + "://"
@@ -27,20 +27,18 @@
 
 </head>
 <script type="text/javascript">
-	var i = 0;
 	//var arr = new Array('#00ffff', '#00ffff');
-	alert(arr);
+	//alert(arr);
 	var count = 1;
-	function addNew() {
-
-		var order_id = 1;
-		i++;
-		tr = document.all.tt.insertRow();
+	var order_id = 1;
+	function addNew(aa) {
+		tr = document.all.orderListTable.insertRow();
 		tr.style.backgroundColor = '#FFFFFF';
-		tr.insertCell().innerHTML = '<div   align=center>' + order_id
+		tr.insertCell().innerHTML = '<div   align=center>' + order_id;
 				+ '</div>';
-		tr.insertCell().innerHTML = '<div   align=center><select   style=\"width:100px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=START_SITUS  class=border_index></div>';
-		tr.insertCell().innerHTML = '<div   align=center><input   style=\"width:50px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=ARRIVE_SITUS   class=border_index></div>';
+		tr.insertCell().innerHTML = '<div   align=center><input placeholder=\"请输入编号\" style=\"width:100px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=goodsNumber  class=border_index></div>';
+		tr.insertCell().innerHTML = '<div   align=center><input placeholder=\"请输入数量\"   style=\"width:100px; float: left; height:20px;border:none\"  class=inputstyle   type=text maxlength=20  size=8  name=goodsQuantity   class=border_index></div>';
+		tr.insertCell().innerHTML = '<div   align=center>' + '</div>';
 		tr.insertCell().innerHTML = '<div   align=center>' + '</div>';
 		tr.insertCell().innerHTML = '<div   align=center>' + '</div>';
 		tr.insertCell().innerHTML = "<a href=javascript:void(0)  class=\"shenpi2\" onclick=del('"
@@ -50,13 +48,100 @@
 	}
 
 	//删除明细行 ...
-	function del(aa) {
-		document.all.tt
-				.deleteRow(window.event.srcElement.parentElement.parentElement.rowIndex);
+function del(aa) {
+    document.all.orderListTable
+        .deleteRow(window.event.srcElement.parentElement.parentElement.rowIndex);
+    count--;
+    order_id--;
+    var table = document.getElementById("orderListTable");
+    for (var i = 2; i < table.rows.length; i++) {
+        table.rows[i].cells[0].innerHTML = i - 1;
+        table.rows[i].cells[0].style.textAlign = "center";
+    }
+}
 
+function submitReturn(){
+			var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); //创建XMLHTTP对象，考虑兼容性
+            xhr.open("POST","OrderServlet?method=add",true);
+            xhr.onreadystatechange=function(){
+                //alert("onreadystatechange,readyState="+xhr.readyState);
+                if(xhr.readyState==4)//服务器返回了
+                {
+                    if(xhr.status==200)//xhr.status http状态码
+                    {
+                        alert(xhr.responseText);//xhr.responseText返回的报文体
+                        //document.getElementById("result").innerText = xhr.responseText;
+                        //根据服务器返回的内容更新需要更新的内容
+                    }
+                    else
+                    {
+                        alert("服务器返回错误");
+                    }
+                }
+            };
+            alert("send之前");
+            xhr.send();//发出请求。并不会等服务器返回send方法才结束，因为我们需要提前监听xhr.onreadystatechange
+            // 事件，以便得知“服务器返回了”
+            alert("send之后");
+}
+	
+function submitSearch(){
+	var orderId=document.getElementById("searchOrderId");
+	var orderClicent=document.getElementById("searchOrderClient");
+	//alert(orderId.value=="");
+	//alert(orderClicent.value=="");
+	if(orderId.value!=""){
+		var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); //创建XMLHTTP对象，考虑兼容性
+        xhr.open("POST","OrderServlet?method=queryById",true);
+        xhr.onreadystatechange=function(){
+        alert("onreadystatechange,readyState="+xhr.readyState);
+        if(xhr.readyState==4)//服务器返回了
+        	{
+             	if(xhr.status==200  || xhr.status==0)//xhr.status http状态码
+                   // {
+                         alert(xhr.responseText);//xhr.responseText返回的报文体
+                        //document.getElementById("result").innerText = xhr.responseText;  根据服务器返回的内容更新需要更新的内容
+                   //	}
+                  // else
+                 //  {
+                 //      alert("服务器返回错误");
+                  // }
+                }
+            };
+            xhr.send();//发出请求。并不会等服务器返回send方法才结束，因为我们需要提前监听xhr.onreadystatechange事件，以便得知“服务器返回了”
 	}
+	else if(orderClicent.value!=""){
+		var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP'); //创建XMLHTTP对象，考虑兼容性
+        xhr.open("POST","OrderServlet?method=queryByClient",true);
+        xhr.onreadystatechange=function(){
+        alert("onreadystatechange,readyState="+xhr.readyState);
+        if(xhr.readyState==4)//服务器返回了
+        	{
+        	alert(xhr.status);
+             	if(xhr.status==200 || xhr.status==0)//xhr.status http状态码
+                    {
+                        alert(xhr.responseText);//xhr.responseText返回的报文体
+                        //document.getElementById("result").innerText = xhr.responseText;  根据服务器返回的内容更新需要更新的内容
+                    }
+                    else
+                    {
+                        alert("服务器返回错误");
+                    }
+              }
+        };
+        xhr.send();//发出请求。并不会等服务器返回send方法才结束，因为我们需要提前监听xhr.onreadystatechange事件，以便得知“服务器返回了”
+	}
+	else
+	{
+		alert("订单编号和客户编号必须填一个");
+	}
+ }
 </script>
 <body>
+
+<%
+String userName = (String)session.getAttribute("userName");
+%>
 	<div class="dvcontent">
 
 		<div>
@@ -93,21 +178,21 @@
 											<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
 												style="padding-top: 30px;">
 												<form class="am-form am-form-horizontal"
-													action="user/addUser1Submit.action" method="post">
+													action="OrderServlet?method=add" method="post">
 													<div class="am-form-group">
 														<label for="xiaoshou-number"
 															class="am-u-sm-3 am-form-label"> 订单编号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-number"
-																readonly="readonly" name="number">
+																readonly="readonly" name="orderNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
 														<label class="am-u-sm-3 am-form-label"> 订单类型 </label>
 														<div class="am-u-sm-9">
 															<select name="type">
-																<option value="1">现货</option>
-																<option value="2">预定</option>
+																<option value="现货">现货</option>
+																<option value="预定">预定</option>
 															</select>
 														</div>
 													</div>
@@ -117,7 +202,7 @@
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-client"
 																required="required" placeholder="请输入10位有效的客户编号"
-																name="client">
+																name="clientNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -126,7 +211,7 @@
 														<div class="am-u-sm-9">
 															<input type="text" id="xiaoshou-staff"
 																readonly="readonly" placeholder="请输入10位有效的销售员编号"
-																name="staff">
+																name="staffNumber" value="<%= userName %>">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -142,24 +227,25 @@
 														<label class="am-u-sm-3 am-form-label"> 订单状态 </label>
 														<div class="am-u-sm-9">
 															<select name="status">
-																<option value="1">未完成</option>
+																<option value="未完成">未完成</option>
 															</select>
 														</div>
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-9 am-u-sm-push-5">
-															<input type="button" class="am-btn am-btn-success"
+															<input type="submit" class="am-btn am-btn-success"
 																value="添加订单" />
 														</div>
 														<div class="am-form-group">
-															<table class ="table" width="100%" border="0" cellspacing="1" id="tt">
+															<table class ="table" width="100%" border="0" cellspacing="1" id="orderListTable">
 																<tr class="firstpage1">
 																	<td colspan="16" align="left">
 																</tr>
 																<tr class="firstpage">
-																	<td height="23" width="30%" style="text-align: center">序号</td>
-																	<td width="10%">货物编号</td>
+																	<td height="23" width="20%" style="text-align: center">序号</td>
+																	<td width="15%">货物编号</td>
 																	<td width="10%">数量</td>
+																	<td width="10%">名称</td>
 																	<td width="10%">单位</td>
 																	<td width="10%">单价</td>
 																	<td width="20%"><a href="javascript:void(0)"
@@ -199,7 +285,7 @@
 															退货单号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-number" readonly="readonly"
-																placeholder="请输入10位有效的订单编号" name="number">
+																placeholder="请输入10位有效的订单编号" name="returnNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -208,7 +294,7 @@
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-clicent"
 																required="required" placeholder="请输入10位有效的客户编号"
-																name=" client">
+																name=" clientNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -216,7 +302,7 @@
 															退货批次 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-batch" required="required"
-																placeholder="请输入有效的退货批次" name="batch">
+																placeholder="请输入有效的退货批次" name="batchNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -232,7 +318,7 @@
 															处理人编号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="tuihuo-staff" readonly="readonly"
-																name="staff">
+																name="staffNumber" value="<%= userName %>">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -245,9 +331,9 @@
 														</div>
 													</div>
 													<div class="am-form-group">
-														<div class="am-u-sm-9 am-u-sm-push-3">
-															<input type="submit" class="am-btn am-btn-success"
-																value="添加分类" />
+														<div class="am-u-sm-9 am-u-sm-push-5">
+															<input type="button" class="am-btn am-btn-success" onclick="submitReturn()"
+																value="退货" />
 														</div>
 													</div>
 												</form>
@@ -277,33 +363,17 @@
 													action="user/addUser1Submit.action" method="post">
 
 													<div class="am-form-group">
-														<label for="name" class="am-u-sm-3 am-form-label">
-															食品1 </label>
+														<label for="searchFood" class="am-u-sm-3 am-form-label">
+															食品编号 </label>
 														<div class="am-u-sm-9">
-															<textarea class="" rows="1" id="user-intro"
-																name="remark1"></textarea>
-														</div>
-													</div>
-													<div class="am-form-group">
-														<label for="name" class="am-u-sm-3 am-form-label">
-															食品2 </label>
-														<div class="am-u-sm-9">
-															<textarea class="" rows="1" id="user-intro"
-																name="remark2"></textarea>
-														</div>
-													</div>
-													<div class="am-form-group">
-														<label for="name" class="am-u-sm-3 am-form-label">
-															食品3 </label>
-														<div class="am-u-sm-9">
-															<textarea class="" rows="1" id="user-intro"
-																name="remark3"></textarea>
+															<textarea class="" rows="1" id="searchFood"
+																name="foodNumber"></textarea>
 														</div>
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-9 am-u-sm-push-3">
 															<input type="submit" class="am-btn am-btn-success"
-																value="刷新" />
+																value="查询" />
 														</div>
 													</div>
 												</form>
@@ -330,14 +400,14 @@
 											<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
 												style="padding-top: 30px;">
 												<form class="am-form am-form-horizontal"
-													action="user/addUser1Submit.action" method="post">
+													action="OrderServlet?method=addClient" method="post">
 
 													<div class="am-form-group">
 														<label for="kehu-number" class="am-u-sm-3 am-form-label">
 															客户编号 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-number" readonly="readonly"
-																name="number">
+																name="clientNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -345,7 +415,7 @@
 															姓名 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-name" required="required"
-																placeholder="请输入10位有效的客户编号" name=" name">
+																placeholder="请输入10位有效的客户编号" name="clientName">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -353,7 +423,7 @@
 															联系方式 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-tele" required="required"
-																placeholder="请输入有效的 联系方式" name=" tele">
+																placeholder="请输入有效的 联系方式" name=" teleNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -414,7 +484,7 @@
 															姓名 </label>
 														<div class="am-u-sm-9">
 															<input type="text" id="kehu-name" required="required"
-																placeholder="客户姓名" name="name">
+																placeholder="客户姓名" name="clientName">
 														</div>
 													</div>
 													<div class="am-form-group">
@@ -473,19 +543,27 @@
 											<div class="am-u-sm-12 am-u-md-8 am-u-md-pull-4"
 												style="padding-top: 30px;">
 												<form class="am-form am-form-horizontal"
-													action="user/addUser1Submit.action" method="post">
+													action="OrderServlet?method=queryById" method="post">
 
 													<div class="am-form-group">
-														<label for="kehu-id" class="am-u-sm-3 am-form-label">
+														<label for="searchOrderClient" class="am-u-sm-3 am-form-label">
 															客户编号 </label>
 														<div class="am-u-sm-9">
-															<input type="text" id="kehu-id" required
-																placeholder="客户编号" name="id">
+															<input type="text" id="searchOrderClient"
+																placeholder="客户编号" name="clientNumber">
+														</div>
+													</div>
+													<div class="am-form-group">
+														<label for="searchOrderId" class="am-u-sm-3 am-form-label">
+															订单编号 </label>
+														<div class="am-u-sm-9">
+															<input type="text" id="searchOrderId"
+																placeholder="订单编号" name="orderNumber">
 														</div>
 													</div>
 													<div class="am-form-group">
 														<div class="am-u-sm-5 am-u-sm-push-3">
-															<input type="submit" class="am-btn am-btn-success"
+															<input type="button" class="am-btn am-btn-success" onclick="submitSearch()"
 																value="查询订单" />
 														</div>										
 													</div>
